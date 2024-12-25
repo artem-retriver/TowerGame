@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 73858026}
   - component: {fileID: 73858028}
   - component: {fileID: 73858027}
+  - component: {fileID: 73858029}
   m_Layer: 5
   m_Name: CommentText
   m_TagString: Untagged
@@ -201,6 +202,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 73858025}
   m_CullTransparentMesh: 1
+--- !u!114 &73858029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 73858025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb3038dba1826f469509606b98eff4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &88021280
 GameObject:
   m_ObjectHideFlags: 0
@@ -1582,8 +1595,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba94d77dcb706044b74140ebf4fdd3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  localizedTextUpdater: {fileID: 73858029}
   messageText: {fileID: 73858027}
-  messageDuration: 2
 --- !u!1 &1905692739
 GameObject:
   m_ObjectHideFlags: 0

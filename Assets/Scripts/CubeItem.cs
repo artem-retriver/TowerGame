@@ -4,24 +4,24 @@ using UnityEngine.EventSystems;
 
 public class CubeItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    private RectTransform rectTransform;
-    private CanvasGroup canvasGroup;
-    private Color cubeColor;
-    private Vector3 currentCubePosition;
+    private RectTransform _rectTransform;
+    private CanvasGroup _canvasGroup;
+    private Color _cubeColor;
+    private Vector3 _currentCubePosition;
 
     private int _cubeIndex;
     private bool _isPartOfTower;
     
     public void Initialize(Color color)
     {
-        cubeColor = color;
-        GetComponent<UnityEngine.UI.Image>().color = cubeColor;
+        _cubeColor = color;
+        GetComponent<UnityEngine.UI.Image>().color = _cubeColor;
     }
 
     private void Awake()
     {
-        rectTransform = GetComponent<RectTransform>();
-        canvasGroup = GetComponent<CanvasGroup>();
+        _rectTransform = GetComponent<RectTransform>();
+        _canvasGroup = GetComponent<CanvasGroup>();
     }
 
     public void ChangeIsPartOfTower(bool partOfTower)
@@ -41,13 +41,13 @@ public class CubeItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
 
     public void ActivateCanvasGroupBlocksRaycast()
     {
-        canvasGroup.blocksRaycasts = true;
+        _canvasGroup.blocksRaycasts = true;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        canvasGroup.blocksRaycasts = false;
-        currentCubePosition = transform.position;
+        _canvasGroup.blocksRaycasts = false;
+        _currentCubePosition = transform.position;
         transform.SetParent(transform.root);
 
         if (_isPartOfTower == false)
@@ -58,36 +58,36 @@ public class CubeItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
 
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.transform.position = Input.mousePosition;
+        _rectTransform.transform.position = Input.mousePosition;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        canvasGroup.blocksRaycasts = true;
+        _canvasGroup.blocksRaycasts = true;
         
-        if (VoidManager.Instance.IsInVoid(rectTransform.position))
+        if (VoidManager.Instance.IsInVoid(_rectTransform.position))
         {
-            VoidManager.Instance.AbsorbCube(this, currentCubePosition);
-            GameManager.Instance.NotifyAction("Cube removed through the void.");
+            VoidManager.Instance.AbsorbCube(this, _currentCubePosition);
+            GameManager.Instance.NotifyAction("PlaceVoid");
         }
         else if (_isPartOfTower)
         {
             AnimateDisappearance();
             Destroy(gameObject, 0.5f);
-            TowerManager.Instance.AdjustTowerAfterRemoval(rectTransform, currentCubePosition);
-            GameManager.Instance.NotifyAction("Cube removed through the failed.");
+            TowerManager.Instance.AdjustTowerAfterRemoval(_rectTransform, _currentCubePosition);
+            GameManager.Instance.NotifyAction("FailedCube");
         }
         else if (TowerManager.Instance.TryPlaceCube(this) && _isPartOfTower == false)
         {
             _isPartOfTower = true;
             
             TowerManager.Instance.PlaceCube(this);
-            GameManager.Instance.NotifyAction("Cube placed on the tower.");
+            GameManager.Instance.NotifyAction("PlaceCube");
         }
         else
         {
             AnimateDisappearance();
-            GameManager.Instance.NotifyAction("Cube missed and disappeared.");
+            GameManager.Instance.NotifyAction("MissedCube");
         }
     }
 
