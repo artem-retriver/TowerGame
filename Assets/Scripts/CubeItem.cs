@@ -54,6 +54,8 @@ public class CubeItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         {
             GameManager.Instance.ReplaceCube(this);
         }
+        
+        UIManager.Instance.ChangeEnableScrollRect(false);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -67,13 +69,14 @@ public class CubeItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         
         if (VoidManager.Instance.IsInVoid(_rectTransform.position))
         {
+            UIManager.Instance.ChangeEnableScrollRect(true);
             VoidManager.Instance.AbsorbCube(this, _currentCubePosition);
             GameManager.Instance.NotifyAction("PlaceVoid");
         }
         else if (_isPartOfTower)
         {
             AnimateDisappearance();
-            Destroy(gameObject, 0.5f);
+            UIManager.Instance.ChangeEnableScrollRect(true);
             TowerManager.Instance.AdjustTowerAfterRemoval(_rectTransform, _currentCubePosition);
             GameManager.Instance.NotifyAction("FailedCube");
         }
@@ -81,12 +84,14 @@ public class CubeItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         {
             _isPartOfTower = true;
             
+            UIManager.Instance.ChangeEnableScrollRect(true);
             TowerManager.Instance.PlaceCube(this);
             GameManager.Instance.NotifyAction("PlaceCube");
         }
         else
         {
             AnimateDisappearance();
+            UIManager.Instance.ChangeEnableScrollRect(true);
             GameManager.Instance.NotifyAction("MissedCube");
         }
     }
@@ -94,5 +99,6 @@ public class CubeItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     private void AnimateDisappearance()
     {
         transform.DOScale(new Vector3(0,0,0), 0.5f);
+        Destroy(gameObject, 0.51f);
     }
 }

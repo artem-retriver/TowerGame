@@ -1596,6 +1596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localizedTextUpdater: {fileID: 73858029}
+  scrollRect: {fileID: 772861573}
   messageText: {fileID: 73858027}
 --- !u!1 &1905692739
 GameObject:
