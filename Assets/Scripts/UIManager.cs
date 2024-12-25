@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.Localization.Plugins.XLIFF.V20;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -10,6 +11,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private LocalizedTextUpdater localizedTextUpdater;
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private Text messageText;
+    
+    private Vector3 _currentPosition;
 
     private const float MessageDuration = 2f;
     private float _messageTimer;
@@ -35,6 +38,15 @@ public class UIManager : MonoBehaviour
     public void ChangeEnableScrollRect(bool enable)
     {
         scrollRect.enabled = enable;
+        
+        if (enable == false)
+        {
+            _currentPosition.x = scrollRect.horizontalNormalizedPosition;
+        }
+        else
+        {
+            scrollRect.horizontalNormalizedPosition = _currentPosition.x;
+        }
     }
 
     public void DisplayMessage(string key)
